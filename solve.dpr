@@ -16,7 +16,8 @@ begin
   CurrentWord := '';
   WordCount := 0;
 
-  for i := 1 to Length(InputString) do
+  i := 1;
+  while i <= Length(InputString) do
   begin
     if InputString[i] <> ' ' then
     begin
@@ -29,6 +30,7 @@ begin
       Words[WordCount-1] := CurrentWord;
       CurrentWord := '';
     end;
+    inc(i);
   end;
   
   if Length(CurrentWord) > 0 then
@@ -197,6 +199,7 @@ begin
   // s := 'a 1234567890 cd asd u uu iii i ii a';
   s := 'a 1234567890 cd asd u uu iiia i ii a';
   // s := ' cd bc bc ab 1';
+  // s := 'ab bc cd cd cd cd cd ab bc da a'
   // readln(s);
 
   writeln('s: ', s);
