@@ -4,6 +4,7 @@ type TArrString = array of string;
 type TCIArray = array[char] of integer;
 
 
+{ shared }
 function SplitString(const InputString: string): TArrString;
 var
   words: TArrString;
@@ -40,13 +41,6 @@ begin
   SplitString := Words;
 end;
 
-
-procedure printCharCnt(c: char; cntMap: TCIArray);
-begin
-  if cntMap[c] <> 0 then
-    writeln(c, ': ', cntMap[c]);
-end;
-
 function getNonLastWords(words: TArrString): TArrString;
 var
   i: integer;
@@ -73,14 +67,20 @@ end;
 
 
 {   task1   }
-procedure task1(s: string);
+procedure printCharCnt(c: char; cntMap: TCIArray);
+begin
+  if cntMap[c] <> 0 then
+    writeln(c, ': ', cntMap[c]);
+end;
+
+function task1(s: string): string;
 var
   arr: TArrString;
   i, j: integer;
-  isUnique: boolean;
   vowels: TCIArray; 
-  c: char;
+  s1: string;
 begin
+  s1 := '';
   i := 0;
   vowels['a'] := 0;
   vowels['e'] := 0;
@@ -88,9 +88,6 @@ begin
   vowels['o'] := 0;
   vowels['u'] := 0;
  
-  writeln;
-  writeln('Words <> last word:');
-
   arr := SplitString(s);
   arr := getNonLastWords(arr);
 
@@ -100,28 +97,21 @@ begin
     j := 0;
     while j < Length(arr[i]) do
     begin
-      case UpCase(arr[i][j + 1]) of
-        'A': inc(vowels['a']);
-        'E': inc(vowels['e']);
-        'I': inc(vowels['i']);
-        'O': inc(vowels['o']);
-        'U': inc(vowels['u']);
-      end;
+      inc(vowels[LowerCase(arr[i][j + 1])]);
       Inc(j);
     end;
 
-    write(arr[i], ' ');
+    Insert(arr[i] + ' ', s1, length(s1)+1);
     Inc(i);
   end;
 
-  writeln;
-  writeln;
   writeln('Vowels:');
   printCharCnt('a', vowels);
   printCharCnt('e', vowels);
   printCharCnt('i', vowels);
   printCharCnt('o', vowels);
   printCharCnt('u', vowels);
+  task1 := s1;
 end;
 
 
@@ -131,7 +121,6 @@ function getBestSeq(start: string; words: TArrString; var len: integer): TArrStr
 var
   i, maxL, newL: integer;
   candidate, rest, ans: TArrString;
-  j: integer;
 begin
   ans := words;
   Insert(start, ans, 0);
@@ -162,16 +151,16 @@ begin
   getBestSeq := ans;
 end;
 
-procedure task2(s: string);
+function task2(s: string): string;
 var
   i, maxL, newL: integer;
   arr, candidate, rest, ans: TArrString;
-  j: integer;
+  s2: string;
 begin
   arr := SplitString(s);
-  arr := getNonLastWords(arr);
   ans := arr;
   maxL := 0;
+  s2 := '';
 
   i := 0;
   while (i < Length(arr)) do
@@ -193,29 +182,38 @@ begin
   i := 0;
   while (i < Length(ans)) do
   begin
-    write(ans[i], ' ');
+    Insert(ans[i] + ' ', s2, length(s2) + 1);
     inc(i);
   end;
+  
+  task2 := s2;
 end;
 
 
 
 {  Main  }
 var
-  s1, s2: string;
+  s, s1, s2: string;
 begin
-  // s1 := 'a 1234567890 cd asd u uu iii i ii a';
-  s1 := ' cd bc bc ab 1';
-  // readln(s1);
+  // s := 'a 1234567890 cd asd u uu iii i ii a';
+  s := 'a 1234567890 cd asd u uu iiia i ii a';
+  // s := ' cd bc bc ab 1';
+  // readln(s);
 
-  writeln('s1: ', s1);
+  writeln('s: ', s);
+
   writeln;
-
-  writeln('task1: ');
-  task1(s1);
-
   writeln('-----------');
-  writeln('task2: ');
-  task2(s1);
+  writeln('#  task1  #');
+  writeln('-----------');
+  s1 := task1(s);
+  writeln('s1: ', s1);
+
+  writeln;
+  writeln('-----------');
+  writeln('#  task2  #');
+  writeln('-----------');
+  s2 := task2(s1);
+  writeln('s2: ', s2);
 end.
 
