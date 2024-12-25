@@ -70,7 +70,7 @@ end;
 procedure printCharCnt(c: char; cntMap: TCIArray);
 begin
   if cntMap[c] <> 0 then
-    writeln(c, ': ', cntMap[c]);
+    writeln('''', c, ''': ', cntMap[c]);
 end;
 
 function task1(s: string): string;
@@ -105,7 +105,6 @@ begin
     Inc(i);
   end;
 
-  writeln('Vowels:');
   printCharCnt('a', vowels);
   printCharCnt('e', vowels);
   printCharCnt('i', vowels);
@@ -207,13 +206,19 @@ begin
   writeln('#  task1  #');
   writeln('-----------');
   s1 := task1(s);
-  writeln('s1: ', s1);
+  if (s1 = '') then
+    writeln('<Пустая строка>')
+  else
+    writeln('s1: ', s1);
 
   writeln;
   writeln('-----------');
   writeln('#  task2  #');
   writeln('-----------');
   s2 := task2(s1);
-  writeln('s2: ', s2);
+  if (s2 = '') then
+    writeln('<Пустая строка>')
+  else
+    writeln('s2: ', s2);
 end.
 
