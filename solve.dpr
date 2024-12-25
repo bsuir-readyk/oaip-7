@@ -2,7 +2,6 @@ uses sysutils;
 
 
 type TArrString = array of string;
-const EVowels = ['a', 'e', 'i', 'o', 'u'];
 type TCIArray = array[char] of integer;
 
 
@@ -78,7 +77,7 @@ end;
 procedure task1(s: string);
 var
   arr: TArrString;
-  i: integer;
+  i, j: integer;
   isUnique: boolean;
   vowels: TCIArray; 
   c: char;
@@ -89,25 +88,7 @@ begin
   vowels['i'] := 0;
   vowels['o'] := 0;
   vowels['u'] := 0;
-  while i < Length(s) do
-  begin
-    case UpCase(s[i]) of
-      'A': inc(vowels['a']);
-      'E': inc(vowels['e']);
-      'I': inc(vowels['i']);
-      'O': inc(vowels['o']);
-      'U': inc(vowels['u']);
-    end;
-    Inc(i);
-  end;
-
-  writeln('Vowels:');
-  printCharCnt('a', vowels);
-  printCharCnt('e', vowels);
-  printCharCnt('i', vowels);
-  printCharCnt('o', vowels);
-  printCharCnt('u', vowels);
-
+ 
   writeln;
   writeln('Words <> last word:');
 
@@ -117,17 +98,49 @@ begin
   i := 0;
   while (i < Length(arr)) do
   begin
+    j := 0;
+    while j < Length(arr[i]) do
+    begin
+      case UpCase(arr[i][j + 1]) of
+        'A': inc(vowels['a']);
+        'E': inc(vowels['e']);
+        'I': inc(vowels['i']);
+        'O': inc(vowels['o']);
+        'U': inc(vowels['u']);
+      end;
+      Inc(j);
+    end;
+
     write(arr[i], ' ');
     Inc(i);
   end;
+
+  writeln;
+  writeln;
+  writeln('Vowels:');
+  printCharCnt('a', vowels);
+  printCharCnt('e', vowels);
+  printCharCnt('i', vowels);
+  printCharCnt('o', vowels);
+  printCharCnt('u', vowels);
 end;
+
+
+
+{   task2   }
+procedure task2(s: string);
+var
+  i, j: integer;
+begin
+end;
+
 
 
 {  Main  }
 var
   s1, s2: string;
 begin
-  // s1 := 'a cd asd u uu iii i ii a';
+  // s1 := 'a 1234567890 cd asd u uu iii i ii a';
   readln(s1);
 
   writeln('s1: ', s1);
