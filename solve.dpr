@@ -1,6 +1,5 @@
 uses sysutils;
 
-
 type TArrString = array of string;
 type TCIArray = array[char] of integer;
 
@@ -128,10 +127,75 @@ end;
 
 
 {   task2   }
+function getBestSeq(start: string; words: TArrString; var len: integer): TArrString;
+var
+  i, maxL, newL: integer;
+  candidate, rest, ans: TArrString;
+  j: integer;
+begin
+  ans := words;
+  Insert(start, ans, 0);
+  maxL := len;
+  i := 0;
+
+  while (i < Length(words)) do
+  begin
+    if (start[Length(start)] = words[i][1]) then
+    begin
+      rest := words;
+      delete(rest, i, 1);
+
+      newL := len + 1;
+      candidate := getBestSeq(words[i], rest, newl);
+
+      if (newL > maxL) then
+      begin
+        ans := candidate;
+        insert(start, ans, 0);
+        maxL := newL;
+      end;
+    end;
+    inc(i);
+  end;
+
+  len := maxL;
+  getBestSeq := ans;
+end;
+
 procedure task2(s: string);
 var
-  i, j: integer;
+  i, maxL, newL: integer;
+  arr, candidate, rest, ans: TArrString;
+  j: integer;
 begin
+  arr := SplitString(s);
+  arr := getNonLastWords(arr);
+  ans := arr;
+  maxL := 0;
+
+  i := 0;
+  while (i < Length(arr)) do
+  begin
+    rest := arr;
+    delete(rest, i, 1);
+
+    newL := 0;
+    candidate := getBestSeq(arr[i], rest, newL);
+
+    if (newL > maxL) then
+    begin
+      ans := candidate;
+      maxL := newL;
+    end;
+    inc(i);
+  end;
+
+  i := 0;
+  while (i < Length(ans)) do
+  begin
+    write(ans[i], ' ');
+    inc(i);
+  end;
 end;
 
 
@@ -141,11 +205,17 @@ var
   s1, s2: string;
 begin
   // s1 := 'a 1234567890 cd asd u uu iii i ii a';
-  readln(s1);
+  s1 := ' cd bc bc ab 1';
+  // readln(s1);
 
   writeln('s1: ', s1);
   writeln;
 
+  writeln('task1: ');
   task1(s1);
+
+  writeln('-----------');
+  writeln('task2: ');
+  task2(s1);
 end.
 
